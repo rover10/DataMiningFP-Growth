@@ -2,7 +2,7 @@
 #include<iostream>
 #include<cstring>
 #include<fstream>
-#include "fggrowth.cpp"
+#include "fpgrowth.cpp"
 using namespace std;
 
 class Node{
@@ -12,7 +12,6 @@ class Node{
 	int numberOfItems;
 	public:
 		Node(int numberOfItems){
-			//int SIZE=26;
 			this->numberOfItems=numberOfItems;
 			count=0;
 			arr=new Node*[numberOfItems];
@@ -23,73 +22,54 @@ class Node{
 	
 
 		bool strinsert(vector<vector<Item> > transaction){
-			
 			if(arr==nullptr)
-				arr=new Node*[numberOfItems];  //(numberOfItems);
+				arr=new Node*[numberOfItems]; 
 			Node **tempArr;	
 			for(int i=1;i<transaction.size();i++){
 				tempArr=arr;
 					for(int j=0;j<transaction[i].size();j++){
 						
-				// cout<<"("<<i<<","<<j<<")";//tempArr;
 						if(tempArr[ transaction[i][j].getItemId() -1]==nullptr){
 							    tempArr[ transaction[i][j].getItemId() -1 ]=new Node(numberOfItems);
-							    (tempArr[ transaction[i][j].getItemId() -1 ])->count++;               //// BUG????
+							    (tempArr[ transaction[i][j].getItemId() -1 ])->count++;               
 							    tempArr=tempArr[ transaction[i][j].getItemId() -1 ]->arr;
 							
-			    //	cout<<"inside";
 				        }else{
 				        	
-			            		(tempArr[ transaction[i][j].getItemId() -1 ])->count++;               //// BUG????
+			            		(tempArr[ transaction[i][j].getItemId() -1 ])->count++;               
 			            		tempArr=tempArr[ transaction[i][j].getItemId() -1 ]->arr;
 			            		
 			            }
 					}
 				
 			}
-	///////////----------------------------------------------------------------------------------------------------------------------------------			
-				
-			//cout<<"Inserting"<<" "<<tranNumber<<endl;
-		}
-	//////////-----------------------------------------------------------------------------------------------------------------------------------		
 
+		}
 
 		void traverseTree(){
 			
-			for(int i=0;i<numberOfItems;i++){
+			for(int i=0;i<numberOfItems;i++){	
 				if(arr[i]){
-					cout<<" ( I"<<i+1<<" count:"<<arr[i]->count<<" ) ";
+					cout<<" ( I"<<i+1<<" count:"<<arr[i]->count<<" ) "<<endl;
 					(*arr[i]).traverseTree();
 				}
 			}
 		}
 			
-				
-		bool search(string str,int index=0){
-			if(str[index]=='\0' && str.length()==index) //Returns only if length of search word equals word dictionary
-				return flag;
 			
+		//Mining Function;	
+		void minePattern(Node *root,Item leaf,int count ){
 			
-		//	if(flag==true && str[index]!='\0')//Handles case when search string is bigger than stored & contains other special characters
-		//		return false;
-			if(str[index]>=65 && str[index]<=90 ){
+			//1. Build Transaction list by traversing the tree with root
+			//2. Add all Items n the path to Item leaf.
+			//3. Find the count of each item in transaction.
+			//4. Prune all those elements which donot meet the minimum count
+			//5. Build Tree
+			//6. Pass the tree to this function(Recursively)
+			//7. Base case: Return if root null
 			
-				if(arr[str[index]-65]!=nullptr)
-					return (true && arr[str[index]-65]->search(str,index+1));
-			//	else
-			//		return true;
+		}		
 						
-			}
-			
-			if(str[index]>=97 && str[index]<=122 ){
-				if(arr[str[index]-97]!=nullptr)
-					return (true && arr[str[index]-97]->search(str,index+1));
-			//	else
-			//		return true;
-		   }
-			return false;///Handles those situation where a non Roman Alphabet is present in Search word eg..  "c88pp"
-		}
-			
 };
 
 class Dict{
@@ -98,18 +78,21 @@ class Dict{
 };
 
 int main(){
-	///////////////////////////////////////////////////////////////////
 		FPgrowth objf;
 		objf.readData("data.txt");
 		objf.printTransactions();
 		objf.countItems();
 		objf.printItemCount();
 		objf.sortTransactionItems();
-		cout<<endl<<"After sorted according to Item count"<<endl<<endl;
+		cout<< endl<<"After sorted according to Item count"<<endl<<endl;
 		objf.printTransactions();
-	///////////////////////////////////////////////////////////////////
-	Node n(10);
-	n.strinsert(objf.getTransaction());
-	cout<<"Traversing tree"<<endl;
-	n.traverseTree();
+		int count;
+		count=objf.getMinSupport();
+		objf.prune(count);
+		objf.printPrunedTransaction();
+		Node n(objf.getPTranLen());
+		cout<<endl<<"Building Tree"<<endl;
+		n.strinsert(objf.getTransaction());
+		cout<<endl<<"Traversing tree"<<endl;
+		n.traverseTree();
 }

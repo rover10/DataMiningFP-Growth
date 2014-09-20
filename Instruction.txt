@@ -1,0 +1,29 @@
+ASSIGNMENT -	  	1
+SUBJECT - 		DATA MINING
+TOPIC - 		Implementing FP-Growth approach for Mingng frequent Itemset
+ASSIGNMENT BY - 	Navneet kumar Gupta(25) & Rakesh kumar(31)
+ROLL NUMBER -		25 AND 31
+DATE OF  SUBMISSION- 	September 20, 2014
+
+
+Instructions
+-----------------------------------------------------------------------------------------
+System Requirement
+Operating System: Windows 7/8,Linux
+Language: 	C++ 11 standard
+IDE: 		Dev-Cpp 5.6.2 TDM-GCC x64 4.8.1
+
+
+1. Keep these three files in a directory.
+	1. fpdictionary.cpp
+	2. fpgrowth.cpp
+	3. data.txt
+
+2. Compile the first file i.e. "fpdictionary.cpp" with "Dev-Cpp 5.6.2 TDM-GCC x64 4.8.1"
+3. Run the compiled file.
+4. After reading the data from "data.txt" file the program will ask for minimum support count on console. Provide the input.
+
+5. After pruning the items it will build the FP-Tree 
+   and traverse it in pre-order DFS fashion & print the item's count.
+6. After this step mining is done with the help of this function
+	minePattern(Node *root,Item leaf,int count )
